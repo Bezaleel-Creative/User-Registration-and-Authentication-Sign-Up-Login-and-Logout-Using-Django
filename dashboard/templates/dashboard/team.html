@@ -1,0 +1,80 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+{% for i in messages %}
+<div class="bg-danger" style="color: white;">{{i}}</div>
+{% endfor %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Member Form</h6>
+                <form method="post" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Member's Name:</label>
+                        <input type="text" class="form-control" id="exampleInputName1" name="name"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <!-- <label for="" class="form-label">Position:</label> -->
+                        <select name="post" id="" required class="form-control">
+                            <option value="" disabled selected>Select Position</option>
+                            {% for position in positions %}
+                            <option value="{{ position.position }}">{{ position.position }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFileMultiple" class="form-label">Image</label>
+                        <input class="form-control bg-dark" type="file" accept="image/*" id="formFile" name="upload">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Table Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">Basic Table</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Team Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Position</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                            <tr>
+                                <th scope="row">{{ member.id }}</th>
+                                <td>{{ member.name }}</td>
+                                <td>{{ member.email }}</td>
+                                <td>{{ member.staff_possition }}</td>
+                                <td><div style="height: 50px; width: 50px; border-radius: 50%; overflow: hidden;"><img src="{{ member.photo.url }}" alt="" style="width: 100%; height: 100%;"></div></td>
+                                <td><a href="{% url 'dashboard:team_edit' member.id %}" class="" style="color: green;">Edit</a> <a href="{% url 'dashboard:team_delete' member.id %}">Delete</a></td>
+                            </tr>
+                            {% endfor %}
+                
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
